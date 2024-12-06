@@ -171,7 +171,7 @@ def main() -> None:
     # základní vlastnosti aplikace: jméno, široké rozložení
     st.set_page_config(page_title="Fishboard", layout="wide")
     st.title("PyData - Fishboard")
-    st.header("Visualization and machine learning models")
+    st.header("Visualization and machine learning models for regression")
 
     # použijeme dva sloupce
     col1, col2 = st.columns(2)

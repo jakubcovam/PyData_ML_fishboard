@@ -41,9 +41,9 @@ DATA_DIR = pathlib.Path("data")
 DATA_FILES = {
     "Fishes 🐟🐠🐡": "fish_data.csv",
     "Penguins 🐧🐧🐧": "penguins_size_nona.csv",
-    "Iris 🌻🌺🌼": "Iris.csv",
+    #"Iris 🌻🌺🌼": "Iris.csv",
     #"Wine 🍷🍷🍷": "wine_data.csv",
-    "Breast Cancer 👧👧👧": "breast_cancer.csv",
+    #"Breast Cancer 👧👧👧": "breast_cancer.csv",
 }
 
 
@@ -115,7 +115,8 @@ def regression(
         hyperparams = {
             hyperparam: widget() for hyperparam, widget in REGRESSION_MODELS[model]["hyperparams"].items()
         }
-        metric = st.selectbox("Accuracy metric", list(METRICS))
+    with col1.expander("Accuracy criteria", expanded=True):
+        metric = st.selectbox("Metric", list(METRICS))
 
     # REGRESSION_MODELS[model]["class"] vrací třídu regresoru, např. LinearRegression
     # ve slovníku hyperparams máme uložené hodnoty hyperparametrů od uživatele
@@ -134,10 +135,10 @@ def regression(
     y_predicted = regressor.predict(X_test)
     prediction_error = METRICS[metric](y_predicted, y_test)
 
-    col2.header(f"Model result {model}")
+    col2.header(f"Model: {model}")
     col2.write(f"{metric}: {prediction_error:.3g}")
 
-    # vytvoříme pomocný dataframe s se sloupcem s predikcí
+    # vytvoříme pomocný dataframe se sloupcem s predikcí
     predicted_target_column = f"{target} - predicted"
     complete_data = learning_data.assign(**{predicted_target_column: regressor.predict(X)})
     # vykreslíme správné vs predikované body
@@ -179,7 +180,25 @@ def main() -> None:
         datas = st.selectbox("Dataset", DATA_FILES.keys())
     source_data = load_data(DATA_DIR / DATA_FILES[datas])
 
-    with col1.expander("Preprocessing", expanded=True):
+    with col1.expander("Exploratory data analysis", expanded=True):
+        dist_plot_type = st.selectbox("Type of plot", ["boxplot", "histogram", "violin"])
+        color = st.selectbox("Color for plots", source_data.columns)
+        use_color = st.checkbox(f"Use color ({color})", value=True)
+        target_plot = st.selectbox("Column for analysis", source_data.columns)
+
+    col2.header(f"EDA: {dist_plot_type}")
+
+    with col2:
+        if dist_plot_type == "boxplot":
+            st.write(px.box(source_data, x=target_plot, color=color if use_color else None))
+        elif dist_plot_type == "histogram":
+            st.write(px.histogram(source_data, x=target_plot, color=color if use_color else None))
+        elif dist_plot_type == "violin":
+            st.write(px.violin(source_data, x=target_plot, color=color if use_color else None))
+        else:
+            st.error("Invalid plot type")
+
+    with col1.expander("Preprocessing for machine learning models", expanded=True):
         drop_columns = st.multiselect("Drop columns", source_data.columns)
         get_dummies = st.checkbox("Get dummies")
     learning_data = preprocess(source_data, drop_columns, get_dummies)
@@ -192,7 +211,6 @@ def main() -> None:
         else:
             displayed_data = source_data
             # st.dataframe(displayed_data)
-        # TODO přidat grafy
         st.dataframe(displayed_data)
 
     target = col1.selectbox("Response column", learning_data.columns)

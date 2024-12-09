@@ -47,24 +47,16 @@ StContainer = DeltaGenerator
 # adresář s daty
 DATA_DIR = pathlib.Path("data")
 DATA_FILES = {
-    "Fishes 🐟🐠🐡": {
+    "Fishes 🐟🐠🐡 - regression": {
         "filename": "fish_data.csv",
         "type": "regression"
     },
-    "Penguins 🐧🐧🐧": {
+    "Penguins 🐧🐧🐧 - regression": {
         "filename": "penguins_size_nona.csv",
         "type": "regression"
     },
-    "Iris 🌻🌺🌼": {
+    "Iris 🌻🌺🌼 - classification": {
         "filename": "Iris.csv",
-        "type": "classification"
-    },
-    "Wine 🍷🍷🍷": {
-        "filename": "wine_data.csv",
-        "type": "classification"
-    },
-    "Breast Cancer 👧👧👧": {
-        "filename": "breast_cancer.csv",
         "type": "classification"
     },
 }

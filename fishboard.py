@@ -59,8 +59,14 @@ DATA_FILES = {
         "filename": "Iris.csv",
         "type": "classification"
     },
-    #"Wine 🍷🍷🍷": "wine_data.csv",
-    #"Breast Cancer 👧👧👧": "breast_cancer.csv",
+    "Wine 🍷🍷🍷": {
+        "filename": "wine_data.csv",
+        "type": "classification"
+    },
+    "Breast Cancer 👧👧👧": {
+        "filename": "breast_cancer.csv",
+        "type": "classification"
+    },
 }
 
 # slovník s názvy modelů pro regresi
@@ -296,7 +302,7 @@ def main() -> None:
 
     with col1.expander("Preprocessing for machine learning models", expanded=True):
         drop_columns = st.multiselect("Drop columns", source_data.columns)
-        get_dummies = st.checkbox("Get dummies")
+        get_dummies = st.checkbox("Get dummies", value=True)
     learning_data = preprocess(source_data, drop_columns, get_dummies)
     target = col1.selectbox("Response column", learning_data.columns)
 
@@ -312,12 +318,13 @@ def main() -> None:
 
     with col1.expander("Splitting into test and training data", expanded=True):
         test_size = st.slider("Test set ratio", 0.0, 1.0, 0.25, 0.05)
-        stratify_column = st.selectbox("Stratify", [None] + list(source_data.columns))
-    if stratify_column is not None:
-        stratify = source_data[stratify_column]
-    else:
-        stratify = None
+        #stratify_column = st.selectbox("Stratify", [None] + list(source_data.columns))
+    #if stratify_column is not None:
+    #    stratify = source_data[stratify_column]
+    #else:
+    #    stratify = None
 
+    stratify = None
     if data_type == "regression":
         regression(col1, col2, learning_data, target, test_size, stratify)
     elif data_type == "classification":

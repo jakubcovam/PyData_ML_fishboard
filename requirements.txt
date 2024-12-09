@@ -2,6 +2,6 @@ pandas==2.2.3
 plotly==5.24.1
 scikit-learn==1.5.2
 streamlit==1.40.2
-matplotlib==3.9.2
+matplotlib==3.9.3
 altair==5.5.0
 pyarrow==18.1.0

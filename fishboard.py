@@ -257,9 +257,9 @@ def classification(
 
 def main() -> None:
     # základní vlastnosti aplikace: jméno, široké rozložení
-    st.set_page_config(page_title="Fishboard", layout="wide")
-    st.title("PyData - Fishboard")
-    st.header("Visualization and machine learning models for regression")
+    st.set_page_config(page_title="PyData", layout="wide")
+    st.title("Regression and classification problems")
+    st.header("Exploratory data analysis and machine learning models")
 
     # add horizontal rule
     st.divider()
